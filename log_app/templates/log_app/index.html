@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Log Watcher</title>
+</head>
+<body>
+    <h1>Log Watcher</h1>
+    <pre id="log-output" style="white-space: pre-wrap; font-family: monospace;"></pre>
+
+    <script>
+        const logOutput = document.getElementById("log-output");
+        const socket = new WebSocket("ws://localhost:8000/ws/fetch_logs/");
+
+        socket.onopen = function (e) {
+            console.log("WebSocket connection established");
+        };
+
+        socket.onmessage = function (event) {
+            console.log("Message received:", event.data);
+            logOutput.textContent = event.data;
+        };
+
+        socket.onerror = function (error) {
+            console.error("WebSocket error:", error);
+        };
+
+        socket.onclose = function (event) {
+            console.warn("WebSocket closed:", event);
+        };
+    </script>
+</body>
+</html>
